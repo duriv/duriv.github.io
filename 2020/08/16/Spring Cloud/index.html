@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  
+  <link rel="stylesheet" href="/lib/animate-css/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"duriv.github.io","root":"/","scheme":"Pisces","version":"8.0.0-rc.5","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false};
+  </script>
+
+  <meta name="description" content="Spring Cloud 的理解？Spring Cloud就是微服务系统架构的一站式解决方案，在平时我们构建微服务的过程中需要做如 服务发现注册 、配置中心 、消息总线 、负载均衡 、断路器 、数据监控 等操作，而 Spring Cloud 为我们提供了一套简易的编程模型，使我们能在 Spring Boot 的基础上轻松地实现微服务项目的构建。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud面试题">
+<meta property="og:url" content="https://duriv.github.io/2020/08/16/Spring%20Cloud/index.html">
+<meta property="og:site_name" content="微雪的程序人生">
+<meta property="og:description" content="Spring Cloud 的理解？Spring Cloud就是微服务系统架构的一站式解决方案，在平时我们构建微服务的过程中需要做如 服务发现注册 、配置中心 、消息总线 、负载均衡 、断路器 、数据监控 等操作，而 Spring Cloud 为我们提供了一套简易的编程模型，使我们能在 Spring Boot 的基础上轻松地实现微服务项目的构建。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-15T16:48:18.000Z">
+<meta property="article:modified_time" content="2020-08-24T08:11:53.572Z">
+<meta property="article:author" content="浮生微雪">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://duriv.github.io/2020/08/16/Spring%20Cloud/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>SpringCloud面试题 | 微雪的程序人生</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <main class="main">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">微雪的程序人生</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">一個抒發本人心情的地方</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring-Cloud-%E7%9A%84%E7%90%86%E8%A7%A3%EF%BC%9F"><span class="nav-number">1.</span> <span class="nav-text">Spring Cloud 的理解？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E5%8F%91%E7%8E%B0%E6%A1%86%E6%9E%B6%E2%80%94%E2%80%94Eureka"><span class="nav-number">1.1.</span> <span class="nav-text">服务发现框架——Eureka</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka-%E5%8E%9F%E7%90%86%E2%AD%90"><span class="nav-number">2.</span> <span class="nav-text">Eureka 原理⭐</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eureka-%E5%92%8C-ZooKeeper-%E7%9A%84%E5%8C%BA%E5%88%AB-%E2%AD%90"><span class="nav-number">3.</span> <span class="nav-text">Eureka 和 ZooKeeper 的区别 ⭐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B9%8B-Ribbon"><span class="nav-number">3.1.</span> <span class="nav-text">负载均衡之 Ribbon</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx-%E5%92%8C-Ribbon-%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">3.1.1.</span> <span class="nav-text">Nginx 和 Ribbon 的对比</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ribbon-%E7%9A%84%E5%87%A0%E7%A7%8D%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95"><span class="nav-number">3.1.2.</span> <span class="nav-text">Ribbon 的几种负载均衡算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Open-Feign"><span class="nav-number">3.2.</span> <span class="nav-text">Open Feign</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hystrix%E2%80%93%E6%96%AD%E8%B7%AF%E5%99%A8"><span class="nav-number">3.3.</span> <span class="nav-text">Hystrix–断路器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%E5%8E%9F%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">服务熔断原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E2%80%94%E2%80%94Zuul"><span class="nav-number">5.</span> <span class="nav-text">微服务网关——Zuul</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%8A%9F%E8%83%BD"><span class="nav-number">5.0.1.</span> <span class="nav-text">路由功能</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%87%E6%BB%A4%E5%8A%9F%E8%83%BD"><span class="nav-number">5.0.2.</span> <span class="nav-text">过滤功能</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E7%AE%A1%E7%90%86%E2%80%94%E2%80%94Config"><span class="nav-number">6.</span> <span class="nav-text">配置管理——Config</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Cloud-Bus"><span class="nav-number">6.1.</span> <span class="nav-text">Spring Cloud Bus</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">浮生微雪</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </header>
+
+      
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div id="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+      <div class="main-inner">
+        
+
+        <div class="content post posts-expand">
+          
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://duriv.github.io/2020/08/16/Spring%20Cloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="浮生微雪">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="微雪的程序人生">
+    </span>
+
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud面试题
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-08-16 00:48:18" itemprop="dateCreated datePublished" datetime="2020-08-16T00:48:18+08:00">2020-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-24 16:11:53" itemprop="dateModified" datetime="2020-08-24T16:11:53+08:00">2020-08-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java%E9%9D%A2%E8%AF%95%E9%A2%98/" itemprop="url" rel="index"><span itemprop="name">java面试题</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Spring-Cloud-的理解？"><a href="#Spring-Cloud-的理解？" class="headerlink" title="Spring Cloud 的理解？"></a>Spring Cloud 的理解？</h2><p>Spring Cloud就是微服务系统架构的一站式解决方案，在平时我们构建微服务的过程中需要做如 <strong>服务发现注册</strong> 、<strong>配置中心</strong> 、<strong>消息总线</strong> 、<strong>负载均衡</strong> 、<strong>断路器</strong> 、<strong>数据监控</strong> 等操作，而 Spring Cloud 为我们提供了一套简易的编程模型，使我们能在 Spring Boot 的基础上轻松地实现微服务项目的构建。 </p>
+<a id="more"></a>
+
+<h3 id="服务发现框架——Eureka"><a href="#服务发现框架——Eureka" class="headerlink" title="服务发现框架——Eureka"></a>服务发现框架——Eureka</h3><p><strong>服务注册 Register</strong> ：</p>
+<p>当 Eureka 客户端（服务提供者）向 Eureka Server 注册时，它存储该服务的信息 ，比如IP地址、端口，运行状况指示符URL，主页等。</p>
+<p><strong>服务续约 Renew</strong> ： </p>
+<p><strong>Eureka 客户端会每隔30秒(默认情况下)发送一次心跳来续约</strong> 。 通过续约来告知 Eureka Server  该 Eureka 客户仍然存在，没有出现问题。正常情况下，如果 Eureka Server 在90秒没有收到 Eureka 客户端的续约，它会将实例从其注册表中删除。 </p>
+<p><strong>获取注册列表信息 Fetch Registries</strong> ： </p>
+<p>Eureka 客户端从服务器获取注册表信息，并将其缓存在本地。客户端会使用该信息查找其他服务，从而进行远程调用。该注册列表信息定期（每30秒钟）更新一次。Eureka  客户端和 Eureka 服务器可以使用JSON / XML格式进行通讯。</p>
+<p><strong>服务下线 Cancel</strong> ： </p>
+<p>Eureka 客户端在程序关闭时向 Eureka 服务器发送取消请求。发送请求后，该客户端实例信息将从服务器的实例注册表中删除。该下线请求不会自动完成，它需要调用以下内容：<code>DiscoveryManager.getInstance().shutdownComponent();</code> </p>
+<p> <strong>服务剔除 Eviction</strong> ： </p>
+<p>在默认的情况下，当 Eureka 客户端连续90秒(3个续约周期)没有向服务器发送服务续约，即心跳，服务器会将该服务实例从服务注册列表删除，即服务剔除。 </p>
+<p> 可以充当服务发现的组件有很多：Zookeeper ，Consul ， Eureka 等。 </p>
+<h2 id="Eureka-原理⭐"><a href="#Eureka-原理⭐" class="headerlink" title="Eureka 原理⭐"></a>Eureka 原理⭐</h2><p>Eureka 主要包括两块： Eureka Server 和 Eureka Client。 </p>
+<p><strong>Eureka Server，服务端</strong>，有三个功能： <strong>服务注册</strong>  <strong>提供注册表</strong>  <strong>同步状态</strong>  </p>
+<p><strong>Eureka Client，客户端</strong>，是一个 Java 客户端，用于简化与 Eureka Server 的交互。它会拉取、更新和缓存 Eureka Server 中的信息。因此当所有的 Eureka Server  节点都宕掉，服务消费者依然可以使用缓存中的信息找到服务提供者。<strong>服务续约</strong>， <strong>服务剔除</strong>， <strong>服务下线</strong> 的功能。</p>
+<p>Eurka 工作流程是这样的：</p>
+<p>1、Eureka Server 启动成功，等待服务端注册。</p>
+<p>2、Eureka Client 启动时根据配置的 Eureka Server 地址去注册中心注册服务</p>
+<p>3、Eureka Client 会每 30s 向 Eureka Server 发送一次心跳请求，证明客户端服务正常</p>
+<p>4、当 Eureka Server 90s 内没有收到 Eureka Client 的心跳，注册中心则认为该节点失效，会注销该实例</p>
+<p>5、单位时间内 Eureka Server 统计到有大量的 Eureka Client 没有上送心跳，则认为可能为网络异常，进入自我保护机制，不再剔除没有上送心跳的客户端</p>
+<p>6、当 Eureka Client 心跳请求恢复正常之后，Eureka Server 自动退出自我保护模式</p>
+<p>7、Eureka Client 定时从注册中心获取服务注册表，并且将获取到的信息缓存到本地</p>
+<p>8、服务调用时，Eureka Client 会先从本地缓存找寻调取的服务。如果获取不到，先从注册中心刷新注册表，再同步到本地缓存</p>
+<p>9、Eureka Client 获取到目标服务器信息，发起服务调用</p>
+<p>10、Eureka Client 程序关闭时向 Eureka Server 发送取消请求，Eureka Server 将实例从注册表中删除</p>
+<h2 id="Eureka-和-ZooKeeper-的区别-⭐"><a href="#Eureka-和-ZooKeeper-的区别-⭐" class="headerlink" title="Eureka 和 ZooKeeper 的区别 ⭐"></a>Eureka 和 ZooKeeper 的区别 ⭐</h2><ul>
+<li><p>C (Consistency) 强一致性</p>
+</li>
+<li><p>A(Availability) 可用性</p>
+</li>
+<li><p>P (Partition tolerance) 分区容错性 </p>
+<p>Zookeeper保证的是CP，Eureka保证的是AP。</p>
+</li>
+</ul>
+<p><strong>Eureka可以很好的应对因网络故障导致部分节点失去联系的情况，而不会像zookeeper那样使整 个注册服务瘫痪</strong> </p>
+<h3 id="负载均衡之-Ribbon"><a href="#负载均衡之-Ribbon" class="headerlink" title="负载均衡之 Ribbon"></a>负载均衡之 Ribbon</h3><p>Ribbon 是一个客户端/进程内负载均衡器，<strong>运行在消费者端</strong> 。 </p>
+<p>其工作原理就是 <code>Consumer</code> 端获取到了所有的服务列表之后，在其<strong>内部</strong> 使用<strong>负载均衡算法</strong> ，进行对多个系统的调用。 </p>
+<h4 id="Nginx-和-Ribbon-的对比"><a href="#Nginx-和-Ribbon-的对比" class="headerlink" title="Nginx 和 Ribbon 的对比"></a>Nginx 和 Ribbon 的对比</h4><p>nginx 是客户端所有请求统一交给 nginx，由 nginx 进行实现负载均衡请求转发，属于服务器端负载均衡。 </p>
+<p>Ribbon 是从 eureka 注册中心服务器端上获取服务注册信息列表，缓存到本地，然后在本地实现轮询负载均衡策略，属于客户端负载均衡。 </p>
+<h4 id="Ribbon-的几种负载均衡算法"><a href="#Ribbon-的几种负载均衡算法" class="headerlink" title="Ribbon 的几种负载均衡算法"></a>Ribbon 的几种负载均衡算法</h4><p>负载均衡，不管 <code>Nginx</code> 还是 <code>Ribbon</code> 都需要其算法的支持，如果我没记错的话 <code>Nginx</code> 使用的是 轮询和加权轮询算法。而在 <code>Ribbon</code> 中有更多的负载均衡调度算法，其默认是使用的 <code>RoundRobinRule</code> 轮询策略。 </p>
+<p><strong>RoundRobinRule</strong> ：轮询策略。<code>Ribbon</code> 默认采用的策略。若经过一轮轮询没有找到可用的 <code>provider</code>，其最多轮询 10 轮。若最终还没有找到，则返回 null。 </p>
+<p>默认轮询算法，并且可以更换默认的负载均衡算法，只需要在配置文件中做出修改。 </p>
+<h3 id="Open-Feign"><a href="#Open-Feign" class="headerlink" title="Open Feign"></a>Open Feign</h3><p>OpenFeign 也是运行在消费者端的，使用 Ribbon 进行负载均衡，所以 OpenFeign 直接内置了 Ribbon。 主要用于消费者和服务者的调用</p>
+<h3 id="Hystrix–断路器"><a href="#Hystrix–断路器" class="headerlink" title="Hystrix–断路器"></a>Hystrix–断路器</h3><p>Hystrix 就是一个能进行 <strong>熔断</strong> 和 <strong>降级</strong> 的库，通过使用它能提高整个系统的弹性。 </p>
+<p>所谓 <strong>熔断</strong> 就是服务雪崩的一种有效解决方案。当指定时间窗内的请求失败率达到设定阈值时，系统将通过 <strong>断路器</strong> 直接将此请求链路断开。 </p>
+<p>也就是我们上面服务A调用服务B在指定时间窗内，调用的失败率到达了一定的值，那么 Hystrix 则会自动将服务A与B之间的请求都断了，以免导致服务雪崩现象。 </p>
+<p> 其实这里所讲的 <strong>熔断</strong> 就是指的 Hystrix中的 <strong>断路器模式</strong> ，你可以使用简单的 <code>@HystrixCommand</code> 注解来标注某个方法，这样 Hystrix 就会使用 <strong>断路器</strong> 来“包装”这个方法，每当调用时间超过指定时间时(默认为1000ms)，断路器将会中断对这个方法的调用。比如： </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@HystrixCommand(</span></span><br><span class="line"><span class="meta">    commandProperties = &#123;@HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;,value = &quot;1200&quot;)&#125;</span></span><br><span class="line"><span class="meta">)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;Xxx&gt; <span class="title">getXxxx</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// ...省略代码逻辑</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>降级是为了更好的用户体验，当一个方法调用异常时，通过执行另一种代码逻辑来给用户友好的回复</strong> 。这也就对应着 Hystrix 的 <strong>后备处理</strong> 模式。你可以通过设置 <code>fallbackMethod</code> 来给一个方法设置备用的代码逻辑。比如这个时候有一个热点新闻出现了，用户会通过id去查询新闻的详情，但是因为这条新闻太火了，大量用户同时访问可能会导致系统崩溃，那么我们就进行 <strong>服务降级</strong> ，一些请求会做一些降级处理比如当前人数太多请稍后查看等等。 </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 指定了后备方法调用</span></span><br><span class="line"><span class="meta">@HystrixCommand(fallbackMethod = &quot;getHystrixNews&quot;)</span></span><br><span class="line"><span class="meta">@GetMapping(&quot;/get/news&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> News <span class="title">getNews</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> <span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 调用新闻系统的获取新闻api 代码逻辑省略</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> News <span class="title">getHystrixNews</span><span class="params">(<span class="meta">@PathVariable(&quot;id&quot;)</span> <span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 做服务降级</span></span><br><span class="line">    <span class="comment">// 返回当前人数太多，请稍后查看</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="服务熔断原理"><a href="#服务熔断原理" class="headerlink" title="服务熔断原理"></a>服务熔断原理</h2><p>hystrix会监控微服务之间调用的状况，当失败的调用到一定阀值，缺省是5秒内20次调用失败就会启动熔断机制。熔断机制的注解是@HystrixCommand。 是通过spring 的 AOP 功能实现的 HystrixCommand 注解的方法是一个切点，有一个对方法增强的类，对他增强，如果出现失败就中断这个方法的调用，返回失败。</p>
+<h2 id="微服务网关——Zuul"><a href="#微服务网关——Zuul" class="headerlink" title="微服务网关——Zuul"></a>微服务网关——Zuul</h2><p>ZUUL 是为了实现动态路由、监视、弹性和安全性而构建的。<strong>就是这样的一个对于消费者的统一入口。</strong> </p>
+<h4 id="路由功能"><a href="#路由功能" class="headerlink" title="路由功能"></a>路由功能</h4><p><code>Zuul</code> 需要向 Eureka 进行注册， 以此来拿到所有 <code>Consumer</code> 的信息，从而直接可以做路由映射。</p>
+<p><strong>基本配置：</strong></p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="string">port:9000</span></span><br><span class="line"><span class="attr">eureka:</span></span><br><span class="line">  <span class="attr">client:</span></span><br><span class="line">    <span class="attr">service-url:</span></span><br><span class="line">      <span class="comment"># 这里只要注册 Eureka 就行了</span></span><br><span class="line">      <span class="string">defaultZone:http://localhost:9997/eureka</span></span><br></pre></td></tr></table></figure>
+
+<p>然后在启动类上加入 <code>@EnableZuulProxy</code> 注解就行了。没错，就是那么简单。 </p>
+<p><strong>统一前缀</strong></p>
+<p>这个很简单，就是我们可以在前面加一个统一的前缀，比如我们刚刚调用的是 <code>localhost:9000/consumer1/studentInfo/update</code>，这个时候我们在 <code>yaml</code> 配置文件中添加如下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zuul:  prefix:&#x2F;zuul</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就需要通过 <code>localhost:9000/zuul/consumer1/studentInfo/update</code> 来进行访问了。</p>
+<p><strong>路由策略配置</strong></p>
+<p>你会发现前面的访问方式(直接使用服务名)，需要将微服务名称暴露给用户，会存在安全性问题。所以，可以自定义路径来替代微服务名称，即自定义路由策略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zuul:  routes:    consumer1:&#x2F;FrancisQ1&#x2F;**    consumer2:&#x2F;FrancisQ2&#x2F;**</span><br></pre></td></tr></table></figure>
+
+<p>这个时候你就可以使用 <code>localhost:9000/zuul/FrancisQ1/studentInfo/update</code> 进行访问了。</p>
+<p><strong>服务名屏蔽</strong></p>
+<p>这个时候你别以为你好了，你可以试试，在你配置完路由策略之后使用微服务名称还是可以访问的，这个时候你需要将服务名屏蔽。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zuul:  ignore-services:&quot;*&quot;</span><br></pre></td></tr></table></figure>
+
+<p><strong>路径屏蔽</strong></p>
+<p><code>Zuul</code> 还可以指定屏蔽掉的路径 URI，即只要用户请求中包含指定的 URI 路径，那么该请求将无法访问到指定的服务。通过该方式可以限制用户的权限。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zuul:  ignore-patterns:**&#x2F;auto&#x2F;**</span><br></pre></td></tr></table></figure>
+
+<p>这样关于 auto 的请求我们就可以过滤掉了。</p>
+<blockquote>
+<p>** 代表匹配多级任意路径</p>
+<p>*代表匹配一级任意路径</p>
+</blockquote>
+<p><strong>敏感请求头屏蔽</strong></p>
+<p>默认情况下，像 Cookie、Set-Cookie 等敏感请求头信息会被 zuul 屏蔽掉，我们可以将这些默认屏蔽去掉，当然，也可以添加要屏蔽的请求头。</p>
+<h4 id="过滤功能"><a href="#过滤功能" class="headerlink" title="过滤功能"></a>过滤功能</h4><p>所有请求都经过网关(Zuul)，那么我们可以进行各种过滤，这样我们就能实现 <strong>限流</strong> ，<strong>灰度发布</strong> ，<strong>权限控制</strong> 等等。 </p>
+<p>过滤器类型：Pre、Routing、Post。前置Pre就是在请求之前进行过滤，Routing路由过滤器就是我们上面所讲的路由策略，而Post后置过滤器就是在 <code>Response</code> 之前进行过滤的过滤器。</p>
+<h2 id="配置管理——Config"><a href="#配置管理——Config" class="headerlink" title="配置管理——Config"></a>配置管理——Config</h2><p>当我们的微服务系统开始慢慢地庞大起来，那么多 <code>Consumer</code> 、<code>Provider</code> 、<code>Eureka Server</code> 、<code>Zuul</code> 系统都会持有自己的配置，这个时候我们在项目运行的时候可能需要更改某些应用的配置，如果我们不进行配置的统一管理，我们只能<strong>去每个应用下一个一个寻找配置文件然后修改配置文件再重启应用</strong> 。</p>
+<p>首先对于分布式系统而言我们就不应该去每个应用下去分别修改配置文件，再者对于重启应用来说，服务无法访问所以直接抛弃了可用性，这是我们更不愿见到的。</p>
+<p><code>Spring Cloud Config</code> 就是能将各个 应用/系统/模块的配置文件存放到 <strong>统一的地方然后进行管理</strong> (Git 或者 SVN)。 </p>
+<p>我们的应用只有启动的时候才会进行配置文件的加载，那么我们的 <code>Spring Cloud Config</code> 就暴露出一个接口给启动应用来获取它所想要的配置文件，应用获取到配置文件然后再进行它的初始化工作。 </p>
+<p>怎么进行动态修改配置文件呢？  一般我们会使用 <code>Bus</code> 消息总线 + <code>Spring Cloud Config</code> 进行配置的动态刷新。 </p>
+<h3 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h3><p>你可以简单理解为 <code>Spring Cloud Bus</code> 的作用就是<strong>管理和广播分布式系统中的消息</strong> ，也就是消息引擎系统中的广播模式。当然作为 <strong>消息总线</strong> 的 <code>Spring Cloud Bus</code> 可以做很多事而不仅仅是客户端的配置刷新功能。 </p>
+<p>而拥有了 <code>Spring Cloud Bus</code> 之后，我们只需要创建一个简单的请求，并且加上 <code>@ResfreshScope</code> 注解就能进行配置的动态修改了 。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"># java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/15/SpringBoot/" rel="prev" title="SpringBoot面试题">
+      <i class="fa fa-chevron-left"></i> SpringBoot面试题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/17/MySQL%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="next" title="MySQl面试题">
+      MySQl面试题 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+        </div>
+        
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">浮生微雪</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
